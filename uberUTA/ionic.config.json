@@ -1,0 +1,7 @@
+{
+  "name": "uberUTA",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

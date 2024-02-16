@@ -17,4 +17,4 @@ import { GpsPage } from './gps.page';
   ],
   declarations: [GpsPage]
 })
-export class GpsPageModule {}
+export class GpsPageModule { }

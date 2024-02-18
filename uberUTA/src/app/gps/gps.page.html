@@ -4,6 +4,10 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
+  <div>
+    <input id="address" type="textbox" [formControl]="address">
+    <input type="button" value="Encode" (click)="getDestination()">
+  </div>
   <div id="map"></div>
 </ion-content>

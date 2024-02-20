@@ -10,11 +10,12 @@ declare var google: any;
 })
 export class GpsPage implements OnInit {
   map: any = null; // Inicializa map como null
-  geocoder: any = null; //Inicializa geocoder como null
   service: any = null;
   currentPositionMarker: any; // Marcador para la ubicación actual
-  address = new FormControl('');
-  destination: any;
+  address: any = new FormControl('');
+  autocomplete: any = null;
+  destination: any = null;
+
   constructor() { }
 
   ngOnInit() {
@@ -24,13 +25,20 @@ export class GpsPage implements OnInit {
   //Función para inicializar el mapa
   initMap() {
     const mapEle = document.getElementById('map');
-    this.geocoder = new google.maps.Geocoder();
+    this.destination = document.getElementById('address');
+    this.autocomplete = new google.maps.places.Autocomplete(this.destination,
+      {
+        componentRestrictions: { country: ["mx", "AG"] },
+        fields: ["address_components", "geometry"],
+        types: ["address"],
+      });
     const myLatLng = { lat: 21.8841903, lng: -102.2947834 };  // Centar en Ags. si no da permiso de ubicación
     this.map = new google.maps.Map(mapEle, {
       center: myLatLng,
       zoom: 12
     });
-
+    this.destination.focus();
+    this.address.value = this.destination.value;
     // Agrega un listener al evento 'idle'
     google.maps.event.addListenerOnce(this.map, 'idle', () => {
       // Ejecuta este código una vez que el mapa esté listo
@@ -73,7 +81,7 @@ export class GpsPage implements OnInit {
   getDestination() {
     console.log(this.address.value);
     const request = {
-      query: this.address.value || 'UTA',
+      query: this.address.value,
       fields: ["name", "geometry"],
     };
     this.service = new google.maps.places.PlacesService(this.map);
@@ -92,6 +100,9 @@ export class GpsPage implements OnInit {
     const marker = new google.maps.Marker({
       map: this.map,
       position: place.geometry.location,
+      title: place.name
     });
+    console.log(place.geometry.location.lat())
+    console.log(place.geometry.location.lng())
   }
 }
